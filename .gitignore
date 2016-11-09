@@ -12,6 +12,7 @@
 *.so
 *.dylib
 *.dll
+*.db
 
 # Fortran module files
 *.mod
@@ -27,3 +28,10 @@
 *.exe
 *.out
 *.app
+
+
+# Folders
+/x64/*
+/ConsoleEngine/x64*
+/.vs/*
+*.opendb

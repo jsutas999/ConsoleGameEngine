@@ -9,10 +9,15 @@ void GameManager::Run()
 	isRunning = true;
 
 	std::list<Entity*> gameObjects;
+
 	gameObjects.push_back(new PlayerController());
+	
 	float timePerFrame = 1/60;
+	
 	clock_t t;
+	
 	t = clock();
+
 	clock_t start = clock();
 
 	float fl = timePerFrame;
@@ -23,10 +28,12 @@ void GameManager::Run()
 	{
 		t = clock() - t;
 		timepassed = ((float)clock() - start ) / CLOCKS_PER_SEC;
+
 		fl -= float(t) / CLOCKS_PER_SEC;
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 		t = clock();
+
 		if(fl > 0.0)
 		{
 			continue;
@@ -49,11 +56,19 @@ void GameManager::Run()
 		renderer->Draw();
 		// Draw Messages
 		logger.PrintMsg();
-
 		std:: cout << timepassed;
 		
 		//std::cin >> i;
 	}
+
+
+	while (!gameObjects.empty())
+	{
+		delete gameObjects.front();
+		gameObjects.pop_front();
+	}
+
+
 }
 
 GameManager::GameManager(int width,int height)
