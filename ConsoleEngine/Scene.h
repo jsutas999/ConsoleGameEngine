@@ -1,11 +1,13 @@
 #pragma once
 #include <list>
 #include "Entity.h"
+// Base class that every scene derives from
 class Scene
 {
 public:
 	 Scene();
 	~Scene();
+	// Updates all of the Enitys prsent in the scene
 	void Update();
 	// Is called after the creation of the scene
 	virtual void Initialize() = 0;

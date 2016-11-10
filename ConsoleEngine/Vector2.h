@@ -1,4 +1,5 @@
 #pragma once
+// 2D representation of INT
 class Vector2
 {
 public:
