@@ -1,10 +1,11 @@
 #pragma once
+#include <iostream>
 #include "InputManager.h"
 #include "Renderer.h"
 #include "Map.h"
 #include "Entity.h"
 #include "Logger.h"
-#include <iostream>
+#include "SceneManager.h"
 class GameManager
 {
 public:
@@ -13,14 +14,19 @@ public:
 	~GameManager();
 
 	static float getTime();
+	static float getDeltaTime();
+	static void Quit();
 
 private:
-	bool isRunning;
+	
 	InputManager* input;
 	Renderer* renderer;
 	Logger logger;
+	SceneManager* sceneManager;
 	
+	static bool isRunning;
 	static float timepassed;
+	static float deltaTime;
 	
 
 };

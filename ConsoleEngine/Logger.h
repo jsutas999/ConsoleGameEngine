@@ -1,6 +1,7 @@
 #pragma once
-#include<list>
-#include<iostream>
+#include <list>
+#include <fstream>
+#include <iostream>
 class Logger
 {
 public:
@@ -13,5 +14,6 @@ public:
 private:
 	std::list<std::string> msg;
 	static Logger* singleton;
+	std::ofstream out;
 };
 

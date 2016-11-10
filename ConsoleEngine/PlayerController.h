@@ -5,9 +5,10 @@ class PlayerController : public Entity
 {
 public:
 	PlayerController();
-	~PlayerController();
 	void Update();
 	void Start();
+	// This method should handle the deconstruction of the object
+	void Deconstruct();
 
 private:
 	float x;

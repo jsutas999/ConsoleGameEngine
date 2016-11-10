@@ -9,13 +9,10 @@ PlayerController::PlayerController() : Entity()
 	symbol = 'P';
 	r = 5.0;
 	startpos = position;
+	
 
 }
 
-
-PlayerController::~PlayerController()
-{
-}
 
 void PlayerController::Update()
 {
@@ -24,7 +21,8 @@ void PlayerController::Update()
 	if (b == 38) position.y--;
 	else if (b == 39) position.x++;
 	else if (b == 37) position.x--;
-	else if (b == 40) position.y++;
+	else if (b == 40) GameManager::Quit();
+	//else if (b == 40) position.y++;
 
 	y = std::sin(startpos.y +   GameManager::getTime())*r;
 	x = std::cos(startpos.x +   GameManager::getTime())*r*1.5;
@@ -42,3 +40,9 @@ void PlayerController::Start()
 {
 
 }
+
+void PlayerController::Deconstruct()
+{
+	Logger::getInstance()->AddMsg("GameObjectDeleted");
+}
+

@@ -10,6 +10,7 @@ Logger * Logger::getInstance()
 void Logger::AddMsg(std::string message)
 {
 	msg.push_back(message);
+	out << message.c_str() << std::endl;
 
 	if (msg.size() > 5)
 		msg.pop_front();
@@ -32,10 +33,13 @@ Logger::Logger()
 	if (singleton == NULL)
 		singleton = this;
 
+	out.open("output.txt", std::ofstream::out);
+
 }
 
 
 Logger::~Logger()
 {
 	msg.clear();
+	out.close();
 }

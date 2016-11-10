@@ -1,5 +1,6 @@
 #include "GameManager.h"
 #include "PlayerController.h"
+#include "InitScene.h"
 #include <list>
 #include <time.h> 
 #include <thread>
@@ -7,10 +8,6 @@
 void GameManager::Run()
 {
 	isRunning = true;
-
-	std::list<Entity*> gameObjects;
-
-	gameObjects.push_back(new PlayerController());
 	
 	float timePerFrame = 1/60;
 	
@@ -22,16 +19,20 @@ void GameManager::Run()
 
 	float fl = timePerFrame;
 
-	int i;
+	//Bootstrap the scene
+	sceneManager->LoadNextScene(new InitScene());
 
 	while (isRunning)
 	{
+		
+		// Menage Time
 		t = clock() - t;
 		timepassed = ((float)clock() - start ) / CLOCKS_PER_SEC;
-
 		fl -= float(t) / CLOCKS_PER_SEC;
+		deltaTime = fl;
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
 		t = clock();
 
 		if(fl > 0.0)
@@ -40,34 +41,19 @@ void GameManager::Run()
 		}
 		
 		fl = timePerFrame;
-		
-		//Clear screen
+
+		// Clear Screen
 		renderer->ClearScreen();
-		// Get the newest input
+		// Update Input
 		input->UpdateLastKeyPress();
-
-		//Update states and prepare draw buffer
-		for (std::list<Entity*>::iterator it = gameObjects.begin(); it != gameObjects.end(); it++)
-		{
-			(*it)->Update();
-			renderer->AddToDrawQueue( *it );
-		}
-		// Draw Screen
+		//Update all gameobjects in the scene
+		sceneManager->getCurrentScene()->Update();
+		// Draw The Screen
 		renderer->Draw();
-		// Draw Messages
+		//Print Logger messages
 		logger.PrintMsg();
-		std:: cout << timepassed;
 		
-		//std::cin >> i;
 	}
-
-
-	while (!gameObjects.empty())
-	{
-		delete gameObjects.front();
-		gameObjects.pop_front();
-	}
-
 
 }
 
@@ -76,6 +62,7 @@ GameManager::GameManager(int width,int height)
 	isRunning = false;
 	this->input = new InputManager();
 	this->renderer = new Renderer(width,height);
+	this->sceneManager = new SceneManager();
 }
 
 
@@ -83,11 +70,22 @@ GameManager::~GameManager()
 {
 	delete input;
 	delete renderer;
+	delete sceneManager;
 }
 
 float GameManager::timepassed;
-
 float GameManager::getTime()
 {
 	return timepassed;
+}
+float GameManager::deltaTime;
+float GameManager::getDeltaTime()
+{
+	return deltaTime;
+}
+
+bool GameManager::isRunning;
+void GameManager::Quit()
+{
+	isRunning = false;
 }
